@@ -1,0 +1,53 @@
+server: # 服务端配置
+  port: 10001 # 10001端口
+spring:
+  datasource: # 数据源配置
+    type: com.alibaba.druid.pool.DruidDataSource    # 数据源类型
+    driver-class-name: com.mysql.cj.jdbc.Driver     # 驱动程序类
+    url: jdbc:mysql://localhost:3306/lottery        # 连接地址
+    username: root                                  # 用户名
+    password: 123456                                # 连接密码
+    druid: # druid相关配置
+      initial-size: 5                               # 初始化连接池大小
+      min-idle: 10                                  # 最小维持连接池大小
+      max-active: 50                                # 最大支持连接池大小
+      max-wait: 60000                               # 获取连接最大等待时间
+      time-between-eviction-runs-millis: 60000      # 关闭空闲连接间隔
+      min-evictable-idle-time-millis: 30000         # 连接最小生存时间
+      validation-query: SELECT 1 FROM dual          # 连接状态检测语句
+      test-while-idle: true # 空闲时检测连接是否有效
+      test-on-borrow: false # 申请时检测连接是否有效
+      test-on-return: false # 归还时检测连接是否有效
+#      pool-prepared-statements: false # PSCache缓存 ?
+#      max-pool-prepared-statement-per-connection-size: 20 # 配置PS缓存 ?
+#      filters: stat, wall, slf4j # 开启过滤 ?
+      stat-view-servlet: # 监控界面配置
+        enabled: true # 启用druid监控界面
+        allow: 127.0.0.1      # 访问白名单
+        login-username: druid # 用户名
+        login-password: druid # 密码
+        reset-enable: true # 允许重置
+        url-pattern: /druid/* # 访问路径
+      web-stat-filter:
+        enabled: true # 启动URI监控
+        url-pattern: /* # 跟踪全部服务
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*" # 跟踪排除
+#      filter:
+#        slf4j: # 日志
+#          enabled: true # 启用SLF4j监控
+#          data-source-log-enabled: true # 启用数据库日志
+#          statement-executable-sql-log-enable: true # 执行日志
+#          result-set-log-enabled: true # ResultSet日志启用
+#        stat: # SQL监控
+#          merge-sql: true # 合并统计
+#          log-slow-sql: true # 慢执行记录
+#          slow-sql-millis: 1 # 慢SQL执行时间
+#        wall: # SQL防火墙
+#          enabled: true   # SQL防火墙
+#          config: # 防火墙规则
+#            multi-statement-allow: true # 允许执行批量SQL
+#            delete-allow: false # 禁止执行删除语句
+#      aop-patterns: "com.yootk.provider.action.*,com.yootk.provider.service.*,com.yootk.provider.dao.*" # Spring监控
+
+  application:
+    name: test-10001
