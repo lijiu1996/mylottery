@@ -13,6 +13,8 @@
         <module>lottery-api</module>
         <module>lottery-common</module>
         <module>lottery-data</module>
+        <module>lottery-provider</module>
+        <module>lottery-consumer</module>
     </modules>
 
     <properties>
