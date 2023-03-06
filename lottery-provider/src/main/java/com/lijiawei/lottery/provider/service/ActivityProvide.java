@@ -1,5 +1,6 @@
 package com.lijiawei.lottery.provider.service;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lijiawei.lottery.api.ActivityApi;
@@ -50,7 +51,9 @@ public class ActivityProvide implements ActivityApi {
     public Map<String, Object> pageSearch(ActivityPageRequest pageRequest) {
         Map<String, Object> res = new HashMap<>();
         QueryWrapper<ActivityEntity> qw = new QueryWrapper<>();
-        qw.like(pageRequest.getQueryColumn(),pageRequest.getValue());
+        if(!StrUtil.isBlank(pageRequest.getQueryColumn()) && !StrUtil.isBlank(pageRequest.getValue())) {
+            qw.like(pageRequest.getQueryColumn(),pageRequest.getValue());
+        }
         Page<ActivityEntity> pageHolder = new Page<>(pageRequest.getCurrentPage(), pageRequest.getPageSize());
         activityService.page(pageHolder, qw );
         res.put(resData,pageHolder.getRecords());
