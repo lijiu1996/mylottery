@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("com.lijiawei.lottery.data")
+@ComponentScan(value = {"com.lijiawei.lottery.data","com.lijiawei.lottery.provider"})
 public class ProviderApp {
 
     public static void main(String[] args) {

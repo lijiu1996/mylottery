@@ -4,7 +4,7 @@ spring:
   datasource: # 数据源配置
     type: com.alibaba.druid.pool.DruidDataSource    # 数据源类型
     driver-class-name: com.mysql.cj.jdbc.Driver     # 驱动程序类
-    url: jdbc:mysql://localhost:3306/lottery        # 连接地址
+    url: jdbc:mysql://192.168.194.67:3306/lottery        # 连接地址
     username: root                                  # 用户名
     password: 123456                                # 连接密码
     druid: # druid相关配置
@@ -51,3 +51,7 @@ spring:
 
   application:
     name: test-10001
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
