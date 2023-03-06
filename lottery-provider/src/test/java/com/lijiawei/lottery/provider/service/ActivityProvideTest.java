@@ -26,8 +26,8 @@ class ActivityProvideTest {
     @Test
     public void test_insert() {
         ActivityEntity activity = new ActivityEntity();
-        activity.setActivityId(100001L);
-        activity.setActivityName("测试活动");
+        activity.setActivityId(100003L);
+        activity.setActivityName("测试活动3");
         activity.setActivityDesc("仅用于插入数据测试");
         activity.setBeginDateTime(new Date());
         activity.setEndDateTime(new Date());
