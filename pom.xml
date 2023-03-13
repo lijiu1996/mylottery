@@ -17,6 +17,7 @@
         <module>lottery-consumer</module>
         <module>nacos-example</module>
         <module>lottery-application</module>
+        <module>lottery-demo</module>
     </modules>
 
     <properties>
