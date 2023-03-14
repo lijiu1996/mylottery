@@ -69,18 +69,39 @@ public class SearchTest {
     // leetcode 69. x的平方根
     // 4 5 6 7 8 9
     // a2 <= x b2 > x
+    // [a2 a2+1)
+
+    // 2 * 2 < 5 3 * 3 > 5
     public int mySqrt(int x) {
         if (x <= 1)
             return x;
-        int l = 0, r = (1 << 31) - 1;
+        int l = 0;
+        int r = x/2;
         while (l < r) {
-            int mid = l + (r - l + 1) / 2;
-            if (mid  <= x / mid) {
+            int mid = l + (r - l)/ 2;
+            if ((long)mid * mid <= x) {
                 l = mid;
             } else {
                 r = mid - 1;
             }
         }
-        return l <= x / l ? l : l - 1;
+        return l;
+    }
+
+    // leetcode 367. 有效的
+    // x * x <= target
+    public boolean isPerfectSquare(int num) {
+
+        int l = 1;
+        int r = num / 2;
+        while (l < r) {
+            int mid = l + (r - l + 1) / 2;
+            if ((long)mid * mid <= num) {
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l * l == num ? true : false;
     }
 }
