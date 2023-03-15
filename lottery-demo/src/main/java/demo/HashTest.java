@@ -2,6 +2,7 @@ package demo;
 
 import org.junit.jupiter.api.Test;
 
+import java.awt.geom.Ellipse2D;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -210,41 +211,199 @@ public class HashTest {
         return res;
     }
 
-    // 三数之和
+    // 三数之和 时间复杂度超限
+    // 双指针法优势 去重十分方便
     public List<List<Integer>> threeSum(int[] nums) {
+
         List<List<Integer>> res = new ArrayList<>();
-        Map<Integer,Integer> collect = new HashMap<>();
-        Set<String> collect2 = new HashSet<>();
-        for (int i = 0; i < nums.length; i++) {
-            collect.merge(nums[i],1, (old,v) -> old +v);
-        }
-        for (int i = 0; i < nums.length ; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                int find = 0 - nums[i] - nums[j];
-                Integer integer = collect.get(find);
-                if (integer == null)
-                    continue;
-                if (integer == 1 && (find == nums[i] || find == nums[j]))
-                    continue;
-                List<Integer> num = new ArrayList<>();
-                num.add(nums[i]);
-                num.add(nums[j]);
-                num.add(find);
-                Collections.sort(num);
-                StringBuilder keyb = new StringBuilder();
-                for (int num1 : nums) {
-                    keyb.append(num1);
-                    keyb.append("_");
-                }
-                String key = keyb.toString();
-                if (!collect2.contains(key)) {
-                    collect2.add(key);
-                    res.add(num);
+        Set<String> distin = new HashSet<>();
+        Arrays.sort(nums);
+
+        for (int i = 0 ; i < nums.length - 2; i++) {
+            int j = i + 1;
+            int k = nums.length - 1;
+            while (j < k) {
+                if (nums[i] + nums[j] + nums[k] < 0) {
+                    j++;
+                } else if (nums[i] + nums[j] + nums[k] > 0) {
+                    k--;
+                } else {
+                    String s = "" + nums[i] + "_" + nums[j] + "_" + nums[k];
+                    if (!distin.contains(s)) {
+                        distin.add(s);
+                        List<Integer> num = List.of(nums[i], nums[j], nums[k]);
+                        res.add(num);
+                    }
                 }
             }
         }
         return res;
     }
+
+    @Test
+    public void testFourSum() {
+        int[] nums = new int[] {10_0000_0000,10_0000_0000,10_0000_0000,10_0000_0000};
+        int target = -294967296;
+        fourSum(nums,target);
+    }
+
+    // 四数之和
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length -3 ; i++) {
+            if (i != 0 && nums[i-1] == nums[i])
+                continue;
+            for (int j = i+1; j < nums.length - 2; j++) {
+                if (j != i + 1 && nums[j-1] == nums[j])
+                    continue;
+                int m = j + 1;
+                int n = nums.length - 1;
+                while (m < n) {
+                    long sum = (long)nums[i] + nums[j] + nums[m] + nums[n];
+                    if (sum > target) {
+                        n--;
+                    } else if (sum < target) {
+                        m++;
+                    } else {
+                        ArrayList<Integer> list = new ArrayList<>();
+                        Collections.addAll(list,nums[i],nums[j],nums[m],nums[n]);
+                        res.add(list);
+                        m++; n--;
+                        while (m < n && nums[m] == nums[m-1] ) {
+                            m++;
+                        }
+                        while (m < n && nums[n] == nums[n+1])
+                            n--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    // 344. 反转字符串
+    // 相当于是原地反转数组
+    public void reverseString(char[] s) {
+        for (int i = 0; i < s.length /2; i++) {
+            char tmp = s[i];
+            s[i] = s[s.length - 1 - i];
+            s[s.length - 1 - i] = tmp;
+        }
+    }
+
+    // 541. 反转字符串||
+    // 每2k个字符进行反转 其中
+    //  | k = 2
+    // [1 2 3 4 5 6 ]
+    // 判断当前剩余个数
+    // <k 直接开始反转 反转全部
+    // k <= <2k 反转前k个
+    // = 2k 反转前k个
+    public String reverseStr(String s, int k) {
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i += 2*k) {
+            int remain = chars.length - i;
+            int l,r;
+            if (remain >= k) {
+                l = i;
+                r = l + k - 1;
+            } else {
+                l = i;
+                r = chars.length - 1;
+            }
+            while (l < r) {
+                char tmp = chars[l];
+                chars[l] = chars[r];
+                chars[r] = tmp;
+                l++;
+                r--;
+            }
+        }
+        return new String(chars);
+    }
+
+    // 剑指offer05 替换空格
+    public String replaceSpace(String s) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            if (c == ' ') {
+                stringBuilder.append("%20");
+            } else
+                stringBuilder.append(c);
+        }
+        return stringBuilder.toString();
+    }
+
+    // leetcode 151 反转单词
+    // xxxx  x   xx xx
+    // ||
+    @Test
+    public void test4() {
+        String[] list = {"the sky is blue"};
+        for (String s : list) {
+            String s1 = reverseWords(s);
+            System.out.println(s1);
+        }
+    }
+
+    // 死的这么简单嘛
+    // [the  sky  is  blud]
+    public String reverseWords(String s) {
+        // s.length = ()
+        char[] chars = s.toCharArray();
+        int start = 0, end = s.length() - 1;
+        while (chars[start] == ' ')
+            start++;
+        while (chars[end] == ' ')
+            end--;
+        int fast,slow;
+        for (fast = slow = start; fast <= end; ) {
+            if (chars[fast] != ' ')
+                chars[slow++] = chars[fast++];
+            else {
+                while (fast <= end && chars[fast] == ' ')
+                    fast++;
+                chars[slow++] = ' ';
+            }
+        }
+        int newend = slow - 1;
+        reverse(chars,start,newend);
+        int fast2,slow2;
+        for (fast2 = slow2 = start; fast2 <= newend;) {
+            while (fast2 <= newend && chars[fast2] != ' ')
+                fast2++;
+            reverse(chars,slow2,fast2 - 1);
+            slow2 = fast2 = fast2 + 1;
+        }
+        return new String(chars,start,newend - start + 1);
+    }
+
+    // 剑指Offer 58
+    // 将前n个字符移至字符串尾部
+    // abcdefg k = 2
+    // gfedcba
+    // cdefgab
+    public String reverseLeftWords(String s, int n) {
+        // 先整体反转
+        // 再各自反转
+        char[] chars = s.toCharArray();
+        reverse(chars,0,chars.length-1);
+        int l = s.length() - n;
+        reverse(chars,0, l - 1);
+        reverse(chars,l , chars.length - 1);
+        return new String(chars);
+    }
+
+    private void reverse(char[] chars, int start, int end) {
+        while (start < end) {
+            char tmp = chars[start];
+            chars[start] = chars[end];
+            chars[end] = tmp;
+            start++;end--;
+        }
+    }
+
 
     // 统计字符串字符个数
     @Test
@@ -257,5 +416,21 @@ public class HashTest {
         System.out.println(equals);
 
         String t = "cbb";
+    }
+
+    @Test
+    public void test2() {
+        String s = "  —123   456 ";
+        String[] s1 = s.split(" ");
+        System.out.println(Arrays.toString(s1));
+    }
+
+    @Test
+    public void test3() {
+        String s = "abcdefg";
+        char[] chars = s.toCharArray();
+        int indexto = 3;
+        String s1 = new String(chars, 1, 3);
+        System.out.println(s1);
     }
 }
