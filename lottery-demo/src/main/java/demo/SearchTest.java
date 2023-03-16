@@ -1,5 +1,7 @@
 package demo;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * @author Li JiaWei
  * @ClassName: SearchTest
@@ -103,5 +105,74 @@ public class SearchTest {
             }
         }
         return l * l == num ? true : false;
+    }
+
+
+    @Test
+    public void testt() {
+        int i = nthUglyNumber(7, 7, 7, 7);
+        System.out.println(i);
+    }
+
+    // leetcode 1201. 丑数III
+    public int nthUglyNumber(int n, int a, int b, int c) {
+        if (a == 1 || b == 1 || c == 1)
+            return n;
+        long m1 = gcdm(a,b);
+        long m2 = gcdm(b,c);
+        long m3 = gcdm(a,c);
+        long m4 = gcdm(m1,c);
+
+        int l = 1, r = Integer.MAX_VALUE;
+        while (l < r) {
+            int mid = l + (r-l)/2;
+            int tmp = findT(mid,a,b,c,m1,m2,m3,m4);
+            if (tmp < n) {
+                l = mid + 1;
+            } else if (tmp > n) {
+                r = mid - 1;
+            } else {
+                if (mid % a == 0 || mid % b == 0 || mid % c == 0)
+                    return mid;
+                r = mid - 1;
+            }
+        }
+        return l;
+    }
+
+    public int findT(long m, int a, int b, int c, long m1, long m2, long m3, long m4) {
+        long t = m / a + m / b + m / c - m / m1 - m / m2 - m / m3 + m / m4;
+        return (int)t;
+    }
+
+    // 数组最大数和最小数的最大公约数
+    public int findGCD(int[] nums) {
+        int max = 0, min = 1011;
+        for (int i = 0; i < nums.length ; i++) {
+            if (nums[i] < min)
+                min = nums[i];
+            if (nums[i] > max)
+                max = nums[i];
+        }
+        return (int)gcd(max,min);
+    }
+
+    private long gcdm(long a, long b) {
+        return a * b / gcd(a,b);
+    }
+
+    // 15 18 30
+    // 3 90
+    // 2 3 5
+    // 6 5
+    private long gcd(long p, long q) {
+        long a = Math.max(p,q);
+        long b = Math.min(p,q);
+        while (b != 0) {
+            long mod = a % b;
+            a = b;
+            b = mod;
+        }
+        return a;
     }
 }
