@@ -8,7 +8,9 @@ import java.util.List;
 /**
  * @author Li JiaWei
  * @ClassName: TwopointTest
- * @Description:
+ * @Description: 讲道理 双指针类型急需练习
+ *               Tree 和 List 都是背模板
+ *               但是双指针是真的需要时常联系滴
  * @Date: 2023/3/15 16:45
  * @Version: 1.0
  */
