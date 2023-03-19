@@ -30,7 +30,7 @@ public class TwopointTest {
         return slow;
     }
 
-    public class ListNode {
+    public static class ListNode {
       int val;
       ListNode next;
       ListNode() {}
