@@ -269,4 +269,105 @@ public class TwoPointTest1 {
         }
         return res;
     }
+
+    // leetcode 475. 供暖器
+    public int findRadius(int[] houses, int[] heaters) {
+        int redius = 0;
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        int i;
+        int j = findMinGong(heaters,houses[0]);
+        for (i = 0; i < houses.length ; i++) {
+            int tmpRedis;
+            if (j == 0) {
+                tmpRedis = heaters[j] - houses[i];
+            } else if (j == heaters.length) {
+                tmpRedis = houses[i] - heaters[j - 1];
+            } else {
+                tmpRedis = Math.min(houses[i] - heaters[j-1],heaters[j] - houses[i]);
+            }
+            redius = Math.max(redius,tmpRedis);
+            if (i == houses.length - 1)
+                break;
+            // 更新j
+            while (j < heaters.length && heaters[j] < houses[i+1]) {
+                j++;
+            }
+        }
+        return redius;
+    }
+
+    // target 为房子位置, 寻找到第一个大于target的供暖器索引 若不存在 返回heaters.length
+    public int findMinGong(int [] heaters, int target) {
+        int l = 0;
+        int r = heaters.length ;
+        while (l < r) {
+            int mid = l + (r - l)/2;
+            if (heaters[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;
+    }
+
+    // leetcode 160. 相交链表
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode a = headA;
+        ListNode b = headB;
+        while (a!= null || b != null) {
+            if (a == b)
+                return a;
+            a = a == null ? headB : a.next;
+            b = b == null ? headA : b.next;
+        }
+        return null;
+    }
+
+    // leetcode 86. 分隔链表
+    public ListNode partition(ListNode head, int x) {
+        ListNode less = new ListNode();
+        ListNode more = new ListNode();
+        ListNode lessRear = less;
+        ListNode moreRear = more;
+        while (head != null) {
+            if (head.val < x) {
+                lessRear.next = head;
+                lessRear = lessRear.next;
+            } else {
+                moreRear.next = head;
+                moreRear = moreRear.next;
+            }
+        }
+        lessRear.next = more.next;
+        moreRear.next = null;
+        return less.next;
+    }
+
+    // leetcode 345. 反转字符串中的元音字母
+    public String reverseVowels(String s) {
+        Set<Character> set = new HashSet<>();
+        String yuanyin = "aeiou";
+        for (int i = 0; i < yuanyin.length(); i++) {
+            set.add(yuanyin.charAt(i));
+        }
+        int l = 0;
+        int r = s.length()-1;
+        char[] chars = s.toCharArray();
+        while (l < r) {
+            // 忽略辅音
+            while (l < r && !set.contains(chars[l]))
+                l++;
+            while (l < r && !set.contains(chars[r]))
+                r--;
+            if (l < r) {
+                char tmp = chars[l];
+                chars[l] = chars[r];
+                chars[r] = tmp;
+                l++; r--;
+            }
+        }
+        return new String(chars);
+    }
 }
